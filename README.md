@@ -156,19 +156,65 @@ The XOR operation is unique due to its self-inverting property. When a value is 
 
 Below is a mermaid flowchart depicting the main stages of the system. The nodes and arrows illustrate the flow of data from image upload to final decryption and analysis.
 
-mermaid
-
-`flowchart TD   A[Image Upload]   B[Image Preprocessing: Padding and Resizing]   C[Encryption: Arnold Cat Map and Logistic Map]   D[Additional Encryption: AES S-Box Substitution]   E[Compression Using Robust Algorithm]   F[Enhanced Hash Calculation for Integrity]   G[Transmission Simulation]   H[Decompression of Data]   I[Decryption: Inverse AES S-Box Substitution then Inverse Logistic Map and Inverse Arnold Cat Map]   J[Metadata Extraction and Final Image Recovery]      A --> B   B --> C   C --> D   D --> E   E --> F   F --> G   G --> H   H --> I   I --> J`
+```mermaid
+flowchart TD 
+A[Image Upload] 
+B[Image Preprocessing: Padding and Resizing] 
+C[Encryption: Arnold Cat Map and Logistic Map]
+D[Additional Encryption: AES S-Box Substitution] 
+E[Compression Using Robust Algorithm] 
+F[Enhanced Hash Calculation for Integrity]
+G[Transmission Simulation] 
+H[Decompression of Data] 
+I[Decryption: Inverse AES S-Box Substitution then Inverse Logistic Map and Inverse Arnold Cat Map]
+J[Metadata Extraction and Final Image Recovery] 
+A --> B 
+B --> C 
+C --> D 
+D --> E 
+E --> F 
+F --> G 
+G --> H 
+H --> I 
+I --> J
+```
 
 ### Detailed Module Flowcharts
 
 The encryption module now incorporates an additional encryption step. The flowchart below shows the complete encryption sequence.
 
-`flowchart TD   P[Input Square Image]   Q[Apply Arnold Cat Map Shuffling]   R[Generate Chaotic Keystream with Logistic Map]   S[Perform XOR Operation for Encryption]   T[Apply AES S-Box Substitution]   U[Output Encrypted Image]      P --> Q   Q --> R   R --> S   S --> T   T --> U`
+```mermaid
+flowchart TD   
+P[Input Square Image]  
+Q[Apply Arnold Cat Map Shuffling]  
+R[Generate Chaotic Keystream with Logistic Map]   
+S[Perform XOR Operation for Encryption]   
+T[Apply AES S-Box Substitution]   
+U[Output Encrypted Image]      
+P --> Q   
+Q --> R  
+R --> S  
+S --> T
+T --> U
+```
 
 Similarly, the decryption sequence reverses the operations in exact order.
+```mermaid
+flowchart TD   
+V[Input Encrypted Image]
+W[Reverse AES S-Box Substitution]   
+X[Apply XOR Operation Using Same Keystream]   
+Y[Inverse Arnold Cat Map Shuffling]   
+Z[Remove Padding]   
+AA[Output Decrypted Image]     
+V --> W   
+W --> X   
+X --> Y   
+Y --> Z   
+Z --> AA
 
-`flowchart TD   V[Input Encrypted Image]   W[Reverse AES S-Box Substitution]   X[Apply XOR Operation Using Same Keystream]   Y[Inverse Arnold Cat Map Shuffling]   Z[Remove Padding]   AA[Output Decrypted Image]      V --> W   W --> X   X --> Y   Y --> Z   Z --> AA`
+
+```
 
 ---
 
