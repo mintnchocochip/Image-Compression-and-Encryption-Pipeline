@@ -1,0 +1,18 @@
+[package]
+name = "image-encrypt-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = "0.25.1"          # Image loading, manipulation, saving
+clap = { version = "4.5.4", features = ["derive"] } # Command Line Argument Parsing
+flate2 = "1.0.30"         # Zlib compression/decompression
+sha2 = "0.10.8"           # SHA-256 Hashing
+serde = { version = "1.0.203", features = ["derive"] } # Serialization/Deserialization
+serde_json = "1.0.117"    # JSON handling for metadata
+hex = "0.4.3"             # For converting hash bytes to hex string
+byteorder = "1.5.0"       # For handling metadata length header bytes
+thiserror = "1.0.61"      # Error handling helper
+
+# Optional: for better error reporting if needed
+# anyhow = "1.0.86"
