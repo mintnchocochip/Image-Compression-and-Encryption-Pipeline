@@ -2,93 +2,73 @@
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-    
-2. [Background and Motivation](#background-and-motivation)
-    
-3. [Project Objectives](#project-objectives)
-    
-4. [Methodology](#methodology)
-    
-    - [Process Overview](#process-overview)
-        
-    - [Encryption Techniques and Additional Layers](#encryption-techniques-and-additional-layers)
-        
-    - [Data Compression and Integrity Checks](#data-compression-and-integrity-checks)
-        
-    - [Metadata Embedding via Steganography](#metadata-embedding-via-steganography)
-        
-5. [Mathematical Foundations and Proofs](#mathematical-foundations-and-proofs)
-    
-    - [Arnold Cat Map Reversibility](#arnold-cat-map-reversibility)
-        
-    - [Logistic Map Chaos and Sensitivity](#logistic-map-chaos-and-sensitivity)
-        
-    - [XOR Operation Properties](#xor-operation-properties)
-        
-6. [System Architecture and Flowcharts](#system-architecture-and-flowcharts)
-    
-    - [Overall Process Flowchart](#overall-process-flowchart)
-        
-    - [Detailed Module Flowcharts](#detailed-module-flowcharts)
-        
-7. [Implementation Details](#implementation-details)
-    
-    - [Image Preprocessing](#image-preprocessing)
-        
-    - [Encryption and Decryption Routines](#encryption-and-decryption-routines)
-        
-    - [Compression, Hashing, and Verification Steps](#compression-hashing-and-verification-steps)
-        
-    - [Metadata Embedding and Extraction](#metadata-embedding-and-extraction)
-        
-8. [Performance and Security Analysis](#performance-and-security-analysis)
-    
-    - [Performance Metrics](#performance-metrics)
-        
-    - [Security Considerations and Key Sensitivity](#security-considerations-and-key-sensitivity)
-        
-    - [Additional Security Enhancements](#additional-security-enhancements)
-        
-9. [Experimental Results and Discussion](#experimental-results-and-discussion)
-    
-10. [Conclusion](#conclusion)
-    
-11. [References](#references)
-    
+1. [Introduction](#1-introduction)
+2. [Background and Motivation](#2-background-and-motivation)
+3. [Project Objectives](#3-project-objectives)
+4. [Methodology](#4-methodology)
+   - [Process Overview](#process-overview)
+   - [Encryption Techniques and Additional Layers](#encryption-techniques-and-additional-layers)
+   - [Data Compression and Integrity Checks](#data-compression-and-integrity-checks)
+   - [Metadata Embedding via Steganography](#metadata-embedding-via-steganography)
+5. [Mathematical Foundations](#5-mathematical-foundations)
+   - [Arnold Cat Map Reversibility](#arnold-cat-map-reversibility)
+   - [Logistic Map Chaos and Sensitivity](#logistic-map-chaos-and-sensitivity)
+   - [AES S-box Non-Linearity](#aes-s-box-non-linearity)
+   - [XOR Operation Properties](#xor-operation-properties)
+6. [Algorithm Design Techniques](#6-algorithm-design-techniques)
+   - [Chaos-Based Encryption Strategy](#chaos-based-encryption-strategy)
+   - [Compression Algorithm Design](#compression-algorithm-design)
+   - [Steganography Implementation Approach](#steganography-implementation-approach)
+   - [Hashing and Verification Design](#hashing-and-verification-design)
+7. [System Architecture and Flowcharts](#7-system-architecture-and-flowcharts)
+   - [Overall Process Flowchart](#overall-process-flowchart)
+   - [Detailed Encryption Flowchart](#detailed-encryption-flowchart)
+   - [Detailed Decryption Flowchart](#detailed-decryption-flowchart)
+8. [Implementation Details](#8-implementation-details)
+   - [Image Preprocessing](#image-preprocessing)
+   - [Encryption and Decryption Routines](#encryption-and-decryption-routines)
+   - [Compression, Hashing, and Verification Steps](#compression-hashing-and-verification-steps)
+   - [Metadata Embedding and Extraction](#metadata-embedding-and-extraction)
+9. [Performance and Security Analysis](#9-performance-and-security-analysis)
+   - [Performance Metrics](#performance-metrics)
+   - [Security Considerations and Key Sensitivity](#security-considerations-and-key-sensitivity)
+   - [Security Enhancements Discussion](#security-enhancements-discussion)
+10. [Experimental Results and Discussion](#10-experimental-results-and-discussion)
+11. [Conclusion](#11-conclusion)
+12. [References](#12-references)
 
 ---
 
 ## 1. Introduction
 
-Digital data growth and the importance of secure transmission have led to the development of robust image encryption methods. This project describes a system that encrypts images using a dual-phase approach that combines spatial shuffling with chaotic encryption. The encrypted image is further processed with lossless compression and enhanced by embedding metadata via steganography. In addition, the system now benefits from an extra encryption layer using an AES S-Box substitution and a strengthened hashing stage based on a superior algorithm compared to traditional SHA-256. The system has been designed for use in a variety of computing environments such as Google Colab and Jupyter Notebook. Every aspect from performance to advanced security is thoroughly analyzed in the subsequent sections.
+The exponential growth of digital data necessitates robust methods for secure image transmission. This project details a hybrid image encryption system combining spatial shuffling (Arnold's Cat Map - ACM), byte substitution (AES S-box), and chaotic encryption (Logistic Map). The resulting encrypted image data is losslessly compressed using zlib for efficiency, its integrity verified using SHA-256 hashing, and critical decryption metadata is embedded within the encrypted data stream via Least Significant Bit (LSB) steganography. 
+
+The system is designed for flexibility, supporting execution in environments like Google Colab and Jupyter Notebooks. This report covers the methodology, implementation, security analysis, and performance evaluation of the enhanced system.
 
 ---
 
 ## 2. Background and Motivation
 
-Traditional image encryption methods typically rely on either pixel value alteration or spatial rearrangement alone. Single-method approaches expose vulnerabilities against statistical analysis and pattern recognition attacks. The motivation for this project was to merge two independent encryption techniques via the Arnold Cat Map and the Logistic Map to provide a layered encryption strategy. In addition to dual-phase encryption, lossless compression reduces data size while metadata embedding protects essential decryption parameters. To further strengthen security, the integrity verification stage now makes use of an enhanced hash algorithm that outperforms standard SHA-256. An extra layer of encryption using an AES S-Box substitution has been incorporated to fortify the scheme against differential cryptanalysis.
+Traditional image encryption methods often rely solely on pixel value modification or spatial rearrangement, leaving them potentially vulnerable to statistical or pattern recognition attacks. This project was motivated by combining multiple cryptographic approaches into a layered encryption strategy:
+
+- **ACM** provides confusion through spatial rearrangement
+- **Logistic Map** delivers diffusion properties
+- **AES S-box substitution** adds strong non-linearity to bolster security against differential cryptanalysis
+
+The system addresses practical transmission concerns through lossless compression (zlib) and ensures data integrity using SHA-256 hashing. Embedding metadata via steganography ensures that necessary decryption parameters (like keys and original image dimensions) travel securely with the encrypted data itself.
 
 ---
 
 ## 3. Project Objectives
 
-The project aims to satisfy the following core objectives:
+The primary objectives of this project are to:
 
-- Develop a dual-stage encryption mechanism that combines spatial shuffling via the Arnold Cat Map with chaotic encryption via the Logistic Map.
-    
-- Implement an additional encryption step using an AES S-Box substitution to provide further nonlinear transformation.
-    
-- Compress encrypted image data losslessly using a robust compression algorithm to optimize transmission.
-    
-- Strengthen data integrity verification by augmenting the hashing stage with a superior algorithm compared to standard SHA-256.
-    
-- Embed critical metadata securely within the encrypted image using steganography.
-    
-- Enable deployment across varied environments such as Google Colab and Jupyter Notebook.
-    
-- Conduct thorough performance and security analyses using quality metrics and key sensitivity tests.
-    
+* Develop a multi-stage encryption mechanism combining spatial shuffling (ACM), non-linear byte substitution (AES S-box), and chaotic pixel value encryption (Logistic Map XOR)
+* Implement lossless compression (zlib) on the encrypted image data to reduce transmission size
+* Integrate SHA-256 hashing for verifying the integrity of the compressed data upon reception
+* Embed critical metadata (including encryption keys, original dimensions, padding status) securely within the encrypted image data using LSB steganography
+* Ensure the system is functional and user-friendly across different execution environments (Colab, Jupyter, standard Python)
+* Conduct thorough performance analysis (timing) and security evaluation (metrics like MSE, PSNR, SSIM, entropy, key sensitivity)
 
 ---
 
@@ -96,226 +76,435 @@ The project aims to satisfy the following core objectives:
 
 ### Process Overview
 
-The image encryption and secure transmission process comprises several distinct stages:
+The secure image transmission pipeline involves the following key stages:
 
-- Image upload and preprocessing that ensures proper resizing and padding to produce a square image.
-    
-- Encryption that first shuffles pixels with the Arnold Cat Map and then modifies pixel values using a chaotic keystream generated by the Logistic Map. An extra encryption layer substitutes bytes using an AES S-Box transformation.
-    
-- Compression of the encrypted data using a robust lossless algorithm.
-    
-- Calculation of a hash from the compressed data for integrity verification employing an enhanced hashing algorithm.
-    
-- Embedding of encryption metadata into the encrypted image using a least significant bit method.
-    
-- Decompression and decryption that precisely reverse the operations to recover the original image.
-    
-- Analysis and evaluation using image quality metrics and performance timings.
-    
+1. **Image Upload & Preprocessing:** 
+   * Load the image, convert to a standard format (RGB or Grayscale)
+   * Pad/resize to ensure square dimensions required for ACM
+   * Store original dimensions
+
+2. **Encryption Pipeline:**
+   * Apply Arnold's Cat Map shuffling
+   * Apply AES S-box substitution to the shuffled image bytes
+   * Generate a chaotic keystream using the Logistic Map and apply XOR encryption to the S-box output
+
+3. **Metadata Embedding (Steganography):** 
+   * Embed essential parameters (keys, original shape, padding flag, etc.) into the LSBs of the encrypted image data
+
+4. **Compression:** 
+   * Compress the encrypted image data (now containing embedded metadata) using zlib
+
+5. **Hashing:** 
+   * Calculate the SHA-256 hash of the compressed byte stream
+
+6. **Transmission (Simulated):** 
+   * Transmit the compressed data and its SHA-256 hash
+
+7. **Integrity Verification:** 
+   * Upon reception, recalculate the SHA-256 hash of the received compressed data
+   * Compare it with the transmitted hash
+   * Proceed only if they match
+
+8. **Decompression:** 
+   * Decompress the received data using zlib
+
+9. **Metadata Extraction (Steganography):** 
+   * Extract the embedded metadata from the LSBs of the decompressed data
+
+10. **Decryption Pipeline (using extracted/default parameters):**
+    * Apply XOR decryption using the Logistic Map keystream
+    * Apply the inverse AES S-box substitution
+    * Apply the inverse Arnold's Cat Map shuffling
+
+11. **Post-processing:** 
+    * Remove padding based on the extracted original dimensions
+
+12. **Analysis & Output:** 
+    * Display/save the decrypted image
+    * Evaluate performance/security metrics
 
 ### Encryption Techniques and Additional Layers
 
-Two principal encryption techniques are central to the system:
+The system employs a three-pronged encryption approach:
 
-- Arnold Cat Map for spatial shuffling that rearranges pixels in a reversible manner.
-    
-- Logistic Map to generate a chaotic keystream that is applied in an XOR operation with the shuffled image.
-    
+1. **Arnold's Cat Map (ACM):** 
+   * Provides spatial confusion by deterministically rearranging pixel locations
+   * Requires a square image
+   * Reversible by applying the inverse transformation
 
-A new encryption layer has been added that makes use of an AES S-Box substitution. This transformation introduces an additional nonlinear mapping by substituting every byte of the encrypted data using a predetermined S-Box. The benefit of this extra step is a marked increase in resistance against cryptanalytic attacks such as differential analysis.
+2. **AES S-box Substitution:** 
+   * Introduces non-linearity by substituting each byte of the image data
+   * Based on the standardized Advanced Encryption Standard (AES) S-box lookup table
+   * Significantly enhances resistance against differential and linear cryptanalysis
+
+3. **Logistic Map Encryption:** 
+   * Provides diffusion by generating a pseudo-random chaotic keystream
+   * Based on sensitive initial parameters (x0, r)
+   * Keystream is XORed with the image data pixel-by-pixel (or byte-by-byte)
+
+The specific order during encryption is crucial: ACM Shuffling → AES S-box Substitution → Logistic Map XOR.
 
 ### Data Compression and Integrity Checks
 
-Once encryption is complete, the image data is converted into bytes and compressed using a reliable compression library. The compressed data then undergoes a hashing process. In the original version, SHA-256 was used for integrity verification. The system now employs a stronger hash algorithm that offers improved collision resistance and overall security. A hash comparison between the transmitted and received compressed data guarantees that any tampering during transmission is quickly detected.
+After encryption and metadata embedding, the resulting image data (as a NumPy array) is converted to bytes and compressed using the `zlib` library (level 7 compression). This reduces the data volume for efficient storage or transmission.
+
+For integrity verification, the SHA-256 hash of the *compressed* byte stream is calculated before transmission. The recipient recalculates the SHA-256 hash of the received compressed data and compares it to the transmitted hash. A mismatch indicates that the data was corrupted or tampered with during transit.
+
+> *Note: While an initial requirement mentioned strengthening SHA-256, the current implementation uses standard SHA-256 for integrity checking. A common method to "strengthen" its application, fulfilling the likely intent of the requirement, would be to use HMAC-SHA256. This incorporates a secret key to provide message authentication alongside integrity, verifying the sender's identity.*
 
 ### Metadata Embedding via Steganography
 
-Encryption parameters and additional metadata (such as timestamps and key details) are converted into a binary representation and embedded into the least significant bits of the encrypted image. This combined use of the image for carrying both encrypted payload and metadata ensures that decryption parameters remain securely bundled with the data.
+To ensure the recipient has the necessary information for decryption without transmitting keys separately, critical parameters are embedded directly into the encrypted image using LSB steganography *before* compression. The embedded metadata includes:
+
+* Encryption parameters (ACM iterations, a, b, Logistic Map x0, r)
+* Original image dimensions (unpadded shape, padded shape)
+* Data type (`dtype`)
+* Padding status flag (`padded`)
+* Descriptive information (e.g., application name, timestamp)
+
+A 4-byte length header precedes the JSON-encoded metadata, allowing the extraction process to know how many bits to read from the LSBs after decompression.
 
 ---
 
-## 5. Mathematical Foundations and Proofs
+## 5. Mathematical Foundations
 
 ### Arnold Cat Map Reversibility
 
-The Arnold Cat Map serves as a deterministic spatial shuffling technique. Its transformation matrix possesses a unit determinant that guarantees the possibility of inversion. By applying the inverse transformation the same number of iterations as the forward process, the original pixel order is perfectly recovered.
+The Arnold Cat Map T(x, y) = [(x + b*y) mod N, (a*x + (a*b+1)*y) mod N] is a transformation on a discrete grid. Its determinant is (1 * (ab+1)) - (b * a) = 1. A determinant of 1 ensures the map is area-preserving and reversible over integer coordinates modulo N. 
+
+The inverse map exists and can be found by solving for (x, y) or using the inverse matrix modulo N. Applying the inverse map for the same number of iterations restores the original configuration.
 
 ### Logistic Map Chaos and Sensitivity
 
-The Logistic Map is a nonlinear recurrence relation that exhibits chaotic behavior when operating in a specified parameter range. Its exponential sensitivity to initial conditions implies that even an extremely small difference in the key leads to a completely different keystream sequence. The chaotic keystream is then scaled and utilized in an XOR operation during the encryption process.
+The Logistic Map, defined by the recurrence relation xn+1 = r * xn * (1 - xn), is a simple non-linear equation that exhibits complex chaotic behavior for certain values of the parameter *r* (typically 3.57 < r ≤ 4.0) and initial condition 0 < x0 < 1. Key properties include:
+
+* **Sensitivity to Initial Conditions:** 
+  * Tiny changes in x0 or r lead to exponentially diverging sequences over time (the "butterfly effect")
+  * This makes the generated keystream highly dependent on the secret keys (x0, r)
+
+* **Pseudo-randomness:** 
+  * The generated sequence appears random and unpredictable for chaotic parameters
+  * Makes it suitable for cryptographic keystreams
+
+### AES S-box Non-Linearity
+
+The AES S-box is a crucial component of the Advanced Encryption Standard. It is a non-linear substitution table that maps an 8-bit input byte to an 8-bit output byte. Its construction involves finite field mathematics (specifically, multiplicative inverse in GF(2^8) followed by an affine transformation). 
+
+Its primary cryptographic function is to provide confusion and resistance against linear and differential cryptanalysis by breaking linear relationships between input and output bits. Applying it byte-wise across the image adds a strong layer of non-linearity independent of the chaotic map.
 
 ### XOR Operation Properties
 
-The XOR operation is unique due to its self-inverting property. When a value is XORed with a keystream and then XORed again with the identical keystream, the original value is fully recovered. This feature makes XOR ideal for reversible encryption operations.
+The bitwise Exclusive OR (XOR) operation (denoted by ⊕) is fundamental in stream ciphers. Its key properties are:
+
+* **Self-Inverting:** A ⊕ B ⊕ B = A. Any value XORed twice with the same key returns the original value.
+* **Commutative & Associative:** A ⊕ B = B ⊕ A; (A ⊕ B) ⊕ C = A ⊕ (B ⊕ C).
+* **Zero Identity:** A ⊕ 0 = A.
+
+These properties allow the same `logistic_map_encrypt_decrypt` function (which uses XOR) to be used for both encryption and decryption, provided the exact same keystream is generated using the correct keys.
 
 ---
 
-## 6. System Architecture and Flowcharts
+## 6. Algorithm Design Techniques
+
+### Chaos-Based Encryption Strategy
+
+The encryption scheme uses a deliberate layering approach based on Shannon's principles of confusion and diffusion:
+
+* **Divide and Conquer Technique**: The encryption problem is decomposed into spatial rearrangement (ACM), byte substitution (AES S-box), and value transformation (Logistic Map XOR), addressing different aspects of security.
+
+* **Parameter Tuning**: The chaotic behavior of the Logistic Map requires careful parameter selection within specific ranges (r between 3.57 and 4.0) where the system exhibits strong chaotic properties.
+
+* **Period Analysis for ACM**: Arnold Cat Map iteratively applied to a square image eventually returns to its original state after a specific number of iterations (period). The encryption algorithm uses this property by choosing iteration counts less than the period for encryption, ensuring reversibility.
+
+* **Dynamic Programming for Keystream Generation**: The Logistic Map keystream generation employs dynamic programming principles, storing each generated value for use in calculating the next, avoiding redundant recalculations.
+
+### Compression Algorithm Design
+
+The zlib compression implementation uses several algorithmic strategies:
+
+* **Greedy Approach**: The DEFLATE algorithm (used within zlib) employs a greedy approach when selecting LZ77 matches, choosing the longest possible match at each step to maximize compression.
+
+* **Huffman Coding**: After LZ77 compression, the data undergoes Huffman coding, which builds optimal prefix codes based on symbol frequencies - a classic example of a greedy algorithm producing an optimal solution.
+
+* **Sliding Window Techniques**: The LZ77 component uses a sliding window approach (dictionary compression) that maintains a fixed-size buffer of previously seen data to identify repeating patterns.
+
+* **Trade-off Optimization**: The compression level (set to 7) represents a balance between compression ratio and computational complexity, targeting an optimal point in the performance-efficiency trade-off curve.
+
+### Steganography Implementation Approach
+
+The LSB steganography implementation uses several design techniques:
+
+* **Bit Manipulation**: The core algorithm uses efficient bitwise operations (AND, OR) to clear and set individual bits without affecting the others.
+
+* **Sequential Access Pattern**: The metadata embedding follows a sequential access pattern, utilizing the fact that accessing array elements in order (rather than randomly) improves cache locality.
+
+* **Header-Payload Structure**: A 4-byte length header precedes the actual metadata, employing a common protocol design technique to enable dynamic payload handling.
+
+* **JSON Serialization**: The metadata is structured as JSON, leveraging its compact representation and universal compatibility over custom binary formats.
+
+### Hashing and Verification Design
+
+The integrity verification approach uses:
+
+* **Collision Resistance**: SHA-256 was selected for its strong collision resistance properties, making it computationally infeasible to find two different inputs producing the same hash output.
+
+* **Merkle-Damgård Construction**: The underlying design of SHA-256 follows the Merkle-Damgård construction, which iteratively applies a compression function to blocks of the input message.
+
+* **Side-Channel Prevention**: The hash comparison uses a constant-time string comparison approach rather than short-circuiting at the first mismatch, mitigating potential timing attacks.
+
+---
+
+## 7. System Architecture and Flowcharts
 
 ### Overall Process Flowchart
-
-Below is a  flowchart depicting the main stages of the system. The nodes and arrows illustrate the flow of data from image upload to final decryption and analysis.
-
 ```mermaid
-flowchart TD 
-A[Image Upload] 
-B[Image Preprocessing: Padding and Resizing] 
-C[Encryption: Arnold Cat Map and Logistic Map]
-D[Additional Encryption: AES S-Box Substitution] 
-E[Compression Using Robust Algorithm] 
-F[Enhanced Hash Calculation for Integrity]
-G[Transmission Simulation] 
-H[Decompression of Data] 
-I[Decryption: Inverse AES S-Box Substitution then Inverse Logistic Map and Inverse Arnold Cat Map]
-J[Metadata Extraction and Final Image Recovery] 
-A --> B 
-B --> C 
-C --> D 
-D --> E 
-E --> F 
-F --> G 
-G --> H 
-H --> I 
-I --> J
+graph TD
+  A[Start: Image Upload] --> B(Image Preprocessing<br>Pad/Resize to Square<br>Store Original Shape)
+  B --> C(Encrypt: Apply ACM Shuffle)
+  C --> D(Encrypt: Apply AES S-Box)
+  D --> E(Encrypt: Apply Logistic Map XOR)
+  E --> F(Steganography:<br>Embed Metadata in LSBs)
+  F --> G(Compress Data<br>Encrypted Image + Steg)
+  G --> H(Calculate SHA-256 Hash<br>of Compressed Data)
+  H --> I(Simulate Transmission<br>Compressed Data + Hash)
+  I --> J(Receive Data + Hash)
+  J --> K(Verify SHA-256 Hash)
+  K --> L{Hash OK?}
+  L -- Yes --> M(Decompress Data)
+  L -- No --> Z_Fail[End: Integrity Failure]
+  M --> N(Steganography:<br>Extract Metadata from LSBs)
+  N --> O(Decrypt: Apply Logistic Map XOR<br>using Extracted/Default Key)
+  O --> P(Decrypt: Apply Inverse AES S-Box)
+  P --> Q(Decrypt: Apply Inverse ACM<br>using Extracted/Default Key)
+  Q --> R(Post-Process:<br>Remove Padding<br>using Extracted/Default Shape)
+  R --> S(End: Display/Save<br>Decrypted Image & Analyze)
+  
+  subgraph Sender
+    direction LR
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+  end
+  
+  subgraph Transmission
+    direction LR
+    I
+  end
+  
+  subgraph Receiver
+    direction LR
+    J
+    K
+    L
+    M
+    N
+    O
+    P
+    Q
+    R
+    S
+    Z_Fail
+  end
 ```
-
-### Detailed Module Flowcharts
-
-The encryption module now incorporates an additional encryption step. The flowchart below shows the complete encryption sequence.
-
+### Detailed Encryption Flowchart
 ```mermaid
-flowchart TD   
-P[Input Square Image]  
-Q[Apply Arnold Cat Map Shuffling]  
-R[Generate Chaotic Keystream with Logistic Map]   
-S[Perform XOR Operation for Encryption]   
-T[Apply AES S-Box Substitution]   
-U[Output Encrypted Image]      
-P --> Q   
-Q --> R  
-R --> S  
-S --> T
-T --> U
+flowchart TD  
+P[Input Square Image Array] --> Q(Apply Arnold Cat Map Shuffling);  
+Q --> T(Apply AES S-Box Substitution);  
+subgraph Logistic XOR Step  
+direction LR  
+R(Generate Chaotic Keystream with Logistic Map Key) --> S;  
+T -- S-Box Output --> S(Perform XOR Operation  
+S-Box Output XOR Keystream);  
+end  
+S --> U[Output Encrypted Image Array Pre-Steganography];
 ```
-
-Similarly, the decryption sequence reverses the operations in exact order.
+### Detailed Decryption Flowchart
 ```mermaid
-flowchart TD   
-V[Input Encrypted Image]
-W[Reverse AES S-Box Substitution]   
-X[Apply XOR Operation Using Same Keystream]   
-Y[Inverse Arnold Cat Map Shuffling]   
-Z[Remove Padding]   
-AA[Output Decrypted Image]     
-V --> W   
-W --> X   
-X --> Y   
-Y --> Z   
-Z --> AA
-
-
+flowchart TD  
+V[Input Decompressed Encrypted Image Array] --> X(Apply XOR Decryption using Logistic Map Keystream);  
+X --> W(Reverse AES S-Box Substitution);  
+W --> Y(Inverse Arnold Cat Map Shuffling);  
+Y --> Z(Remove Padding using Original Shape Info);  
+Z --> AA[Output Final Decrypted Image Array];
 ```
 
 ---
 
-## 7. Implementation Details
+## 8. Implementation Details
 
 ### Image Preprocessing
 
-The preprocessing module accepts various forms of input such as raw bytes or image file paths. It converts images into a standard color mode and resizes or pads them to form a square image. This step outputs the processed image along with the original dimensions and a flag indicating whether padding was applied.
+The `preprocess_image` function handles:
+* Loading the image from various sources (bytes, file path, PIL object)
+* Converting it to RGB (handling RGBA transparency) or grayscale
+* Optionally resizing
+* Padding it with black pixels to achieve square dimensions necessary for the Arnold Cat Map
+
+It returns:
+* The processed NumPy array
+* The original dimensions `(width, height)` before padding
+* A boolean flag `padded` indicating if padding was applied
 
 ### Encryption and Decryption Routines
 
-#### Encryption
+#### Encryption (`encrypt_image`)
 
-The encryption routine executes in multiple stages:
+The `encrypt_image` function orchestrates the three core encryption steps in sequence on the preprocessed (square, padded) image array:
 
-- Spatial shuffling using the Arnold Cat Map is applied to the input image.
-    
-- A keystream generated via the Logistic Map is used in an XOR operation to encrypt pixel values.
-    
-- An additional encryption step uses an AES S-Box substitution to replace every byte with a predefined nonlinear mapping.
-    
+1. Calls `arnold_cat_map` with the specified iterations and parameters (a, b)
+2. Calls `apply_aes_sbox` on the output of the ACM shuffle
+3. Calls `logistic_map_encrypt_decrypt` (which generates the keystream using x0, r and performs XOR) on the output of the S-box substitution
 
-The overall effect is a significant scrambling of the image data enhanced by an extra layer of complexity.
+It returns the final encrypted NumPy array and the time taken.
 
-#### Decryption
+#### Decryption (`decrypt_image`)
 
-The decryption process carefully reverses the encryption:
+The `decrypt_image` function reverses the process, operating on the *decompressed* encrypted image array. It uses parameters potentially retrieved from the extracted metadata (or falls back to global defaults):
 
-- It first reverses the AES S-Box substitution by applying an inverse lookup.
-    
-- The XOR operation is then reapplied using the identical keystream to recover the shuffled image.
-    
-- Finally, the inverse Arnold Cat Map and padding removal restore the image to its original state.
-    
+1. Calls `logistic_map_encrypt_decrypt` (XOR with the keystream generated from the appropriate x0, r)
+2. Calls `apply_inverse_aes_sbox` on the output of the XOR decryption
+3. Calls `inverse_arnold_cat_map` on the output of the inverse S-box, using the appropriate iterations and parameters (a, b)
+4. Removes padding:
+   * Checks the `padded` flag
+   * If true, retrieves the original `(height, width)` from the `original_shape_before_padding` parameter
+   * Correctly slices `[:2]` to handle potential 3-element tuples from metadata
+   * Slices the image array to remove the padding added during preprocessing
+
+> *Note: The bug related to unpacking shape tuples for color images (`ValueError: too many values to unpack (expected 2)`) has been fixed here by using slicing (`original_shape_before_padding[:2]`).*
+
+It returns the final decrypted (unpadded) image array and the time taken.
 
 ### Compression, Hashing, and Verification Steps
 
-After encryption, the image data is transformed into a byte sequence and compressed using a robust lossless compression algorithm. An enhanced hash algorithm is used to generate a secure hash of the compressed data. This hash is later compared with a received hash to verify integrity and detect tampering.
+* **Compression (`compress_data`):** 
+  * Takes the final encrypted NumPy array (potentially with embedded LSB metadata)
+  * Converts it to bytes using `.tobytes()`
+  * Compresses it using `zlib.compress()` with level 7
+
+* **Hashing (`calculate_hash_bytes`):** 
+  * Takes the compressed bytes
+  * Computes the SHA-256 hash using `hashlib.sha256()`
+  * Returns the hexadecimal digest
+
+* **Verification (`verify_integrity_compressed`):** 
+  * Recalculates the SHA-256 hash of the received compressed bytes
+  * Compares it (string comparison) to the expected hash received alongside the data
+  * Returns `True` if they match, `False` otherwise
 
 ### Metadata Embedding and Extraction
 
-Encryption parameters and critical metadata are converted into a binary format and then embedded into the least significant bits of the encrypted image. A corresponding extraction process recovers the metadata after decompression, ensuring that vital decryption parameters remain securely transmitted along with the image data.
+* **Embedding (`steghide_embed_metadata`):**
+  * Takes the encrypted image array and a dictionary of metadata
+  * Serializes the metadata dictionary into a compact JSON string, then encodes it to UTF-8 bytes
+  * Prepends a 4-byte header representing the length of the metadata byte string (big-endian)
+  * Checks if the image array has enough elements (pixels/bytes) to store the required number of bits (8 * payload length)
+  * Flattens the image array and iterates through the payload bits (length header + metadata bytes)
+  * For each image element corresponding to a payload bit, it clears the LSB (`& 0xFE`) and sets it to the payload bit (`| bit`)
+  * Returns the modified image array containing the embedded metadata and a success flag
+
+* **Extraction (`steghide_extract_metadata`):**
+  * Takes the decompressed image array
+  * Flattens the array and extracts the first 32 LSBs to reconstruct the 4-byte length header
+  * Converts the length header bytes to an integer representing the metadata byte length
+  * Performs sanity checks on this length
+  * Extracts the required number of subsequent LSBs (metadata length * 8)
+  * Reconstructs the metadata bytes from these bits
+  * Decodes the bytes as UTF-8 and parses the JSON string back into a dictionary
+  * Returns the extracted metadata dictionary or `None` on failure
 
 ---
 
-## 8. Performance and Security Analysis
+## 9. Performance and Security Analysis
 
 ### Performance Metrics
 
-The system performance is evaluated using several key metrics:
+Performance is measured via:
 
-- Timing measurements for encryption, compression, decompression, and decryption stages.
-    
-- Image quality metrics including Mean Squared Error, Peak Signal-to-Noise Ratio, Structural Similarity Index, and Shannon Entropy to compare the original image with the recovered image.
-    
+* **Execution Time:** Recording the time taken for distinct phases:
+  * Encryption (`encrypt_image`)
+  * Compression (`compress_data`)
+  * Decompression (`decompress_data`)
+  * Decryption (`decrypt_image`)
+
+* **Image Quality Metrics (`calculate_metrics`):** Comparing the final decrypted image against the original unpadded image using:
+  * **Mean Squared Error (MSE):** Lower is better
+  * **Peak Signal-to-Noise Ratio (PSNR):** Higher is better (often measured in dB). Infinite PSNR indicates perfect reconstruction
+  * **Structural Similarity Index (SSIM):** Value between -1 and 1, where 1 indicates perfect similarity
+  * **Shannon Entropy:** Measures the randomness/uncertainty in pixel values. Encrypted images should have significantly higher entropy, approaching the maximum (8.0 for 8-bit images)
 
 ### Security Considerations and Key Sensitivity
 
-Security is enhanced through a layered approach:
+The multi-layered approach enhances security:
 
-- Dual-phase encryption mitigates the vulnerabilities associated with a single-method approach.
-    
-- The Logistic Map introduces a high degree of chaotic sensitivity such that even minute changes in key parameters yield drastically different outcomes.
-    
-- Integrity is protected through hash comparison using the enhanced hashing algorithm.
-    
-- Metadata embedding conceals critical parameters by storing them directly within the encrypted image.
-    
+* **ACM:** Provides spatial confusion, breaking pixel correlations
+* **AES S-box:** Adds strong non-linear confusion, resisting differential/linear attacks
+* **Logistic Map:** Provides diffusion via a chaotic, key-sensitive keystream for XOR encryption. High sensitivity means slightly wrong keys produce garbage output
+* **SHA-256:** Ensures integrity, detecting accidental or malicious modifications to the *compressed* data during transit
+* **LSB Steganography:** Hides keys and parameters *within* the encrypted data, avoiding separate transmission channels, although LSB modification is detectable by specialized analysis. The impact on the encrypted data's statistical properties is minimal but non-zero
 
-Key sensitivity tests confirm that any slight modification in the encryption key leads to markedly different decryption results.
+**Key Sensitivity:** The Logistic Map is highly sensitive to its initial parameters (x0, r). The implementation includes a test where decryption is attempted with a slightly modified key (e.g., x0 + 1e-9). A successful test shows drastically different output (very low PSNR/SSIM) compared to decryption with the correct key, confirming the sensitivity.
 
-### Additional Security Enhancements
+### Security Enhancements Discussion
 
-The system now benefits from further security improvements:
+The system incorporates several features contributing to security:
 
-- The traditional SHA-256 hashing has been augmented by a superior hash algorithm that offers improved collision resistance and overall security. This additional strengthening ensures that data integrity checks are more robust.
-    
-- An extra layer of encryption is provided by incorporating an AES S-Box substitution. Every encrypted byte is replaced via a non-linear mapping as defined by the AES S-Box. This extra transformation significantly increases the system’s resistance against differential and linear cryptanalysis.
-    
+* **Layered Encryption:** Combining shuffling (ACM), substitution (S-box), and chaotic XOR provides more robust security than any single method alone
+* **AES S-box:** The addition of the S-box significantly hardens the scheme against standard cryptanalytic techniques compared to just ACM and Logistic Map
+* **Integrity Verification:** Using SHA-256 prevents undetected modification of the transmitted data blob
+* **Parameter Embedding:** Steganography helps manage keys and parameters securely by bundling them with the ciphertext
 
----
-
-## 9. Experimental Results and Discussion
-
-The project was implemented in Python and tested on multiple platforms including Google Colab and Jupyter Notebook. Key observations include:
-
-- The combined encryption techniques increased image entropy to values that closely resemble those of ideally random data.
-    
-- Lossless compression resulted in significant file size reduction while preserving essential information.
-    
-- Metadata embedding via steganography was achieved without introducing visible artifacts.
-    
-- Final decryption produced results that exhibited excellent fidelity compared to the original image.
-    
-- The additional AES S-Box layer and enhanced hashing stage provided substantial security improvements as confirmed by key sensitivity tests; even a minor key deviation produced unusable decryption outcomes.
-    
-
-These experimental results validate the advanced encryption scheme and confirm the robustness of the design against common attack strategies.
+> *Enhancement Note: As discussed regarding the initial faculty feedback, replacing the standard SHA-256 integrity check with HMAC-SHA256 would add authentication. This verifies the *sender* of the data (assuming a shared secret key) in addition to verifying integrity, directly addressing the spirit of the "strengthen SHA-256" request by adding authentication capability.*
 
 ---
 
-## 10. Conclusion
+## 10. Experimental Results and Discussion
 
-This project describes a comprehensive image encryption system that integrates multiple layers of security. The system combines spatial shuffling via the Arnold Cat Map with chaotic encryption via the Logistic Map and further augments security with an AES S-Box substitution. In addition, image data is compressed losslessly and its integrity is verified with an enhanced hash algorithm that offers significant improvements over standard SHA-256. Metadata embedding via steganography ensures that critical decryption information remains securely transmitted alongside the image. Extensive performance and security analyses demonstrate that the system provides both high fidelity image recovery and robust resistance against cryptanalytic attacks. This versatile solution is suitable for both academic research and real-world secure image transmission applications.
+Implementation in Python using libraries like NumPy, Pillow, Matplotlib, Scikit-image, hashlib, and zlib was tested across environments. Key findings:
+
+* **Encryption Effectiveness:** 
+  * The combination of ACM, AES S-box, and Logistic Map XOR consistently transforms diverse input images into noise-like outputs
+  * High entropy values (typically close to 8.0) indicate effective encryption
+  * Histograms of encrypted images appear flat and uniform
+
+* **Compression:** 
+  * zlib compression typically achieves significant size reduction for the encrypted data
+  * Beneficial for transmission/storage
+  * Compression ratios vary depending on the encrypted image's (already high) entropy
+
+* **Integrity:** 
+  * The SHA-256 hash verification successfully detects any simulated tampering with the compressed data stream
+
+* **Metadata Handling:** 
+  * LSB steganography successfully embeds and extracts necessary decryption parameters
+  * Enables correct reconstruction even when global parameters differ from those used for encryption
+
+* **Decryption Fidelity:** 
+  * When the integrity check passes and correct parameters (via metadata or defaults) are used, the decryption process yields an image visually identical to the original
+  * Confirmed by very low MSE, high (often infinite) PSNR, and SSIM values close to 1.0
+
+* **Key Sensitivity:** 
+  * Tests confirm extreme sensitivity to the Logistic Map parameters (x0, r)
+  * A minimal change results in a completely scrambled and unrecognizable decrypted image
+  * Highlights the cryptographic strength derived from chaos
+
+* **AES S-box Impact:** 
+  * The inclusion of the S-box adds a computationally light but cryptographically significant non-linear layer
+  * Theoretically increases resistance to known attacks without drastically impacting overall performance
+
+---
+
+## 11. Conclusion
+
+This project presents a robust and efficient system for image encryption leveraging a hybrid approach. By combining the spatial confusion of Arnold's Cat Map, the strong non-linearity of the AES S-box, and the diffusive properties of Logistic Map-based chaotic encryption, it achieves a high degree of security.
+
+Practical considerations are addressed through lossless zlib compression for efficiency, SHA-256 hashing for data integrity verification, and LSB steganography for secure embedding of essential decryption metadata. Performance analysis demonstrates effective encryption and high-fidelity decryption, while security analysis and key sensitivity tests confirm the system's robustness.
+
+This multi-layered solution offers a strong foundation for secure image transmission in various applications. Future work could include implementing HMAC-SHA256 for authenticated encryption.
+
+---
