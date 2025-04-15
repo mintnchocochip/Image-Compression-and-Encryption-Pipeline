@@ -154,7 +154,7 @@ The XOR operation is unique due to its self-inverting property. When a value is 
 
 ### Overall Process Flowchart
 
-Below is a mermaid flowchart depicting the main stages of the system. The nodes and arrows illustrate the flow of data from image upload to final decryption and analysis.
+Below is a  flowchart depicting the main stages of the system. The nodes and arrows illustrate the flow of data from image upload to final decryption and analysis.
 
 ```mermaid
 flowchart TD 
