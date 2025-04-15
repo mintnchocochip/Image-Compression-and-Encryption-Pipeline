@@ -376,8 +376,6 @@ The `decrypt_image` function reverses the process, operating on the *decompresse
    * Correctly slices `[:2]` to handle potential 3-element tuples from metadata
    * Slices the image array to remove the padding added during preprocessing
 
-> *Note: The bug related to unpacking shape tuples for color images (`ValueError: too many values to unpack (expected 2)`) has been fixed here by using slicing (`original_shape_before_padding[:2]`).*
-
 It returns the final decrypted (unpadded) image array and the time taken.
 
 ### Compression, Hashing, and Verification Steps
