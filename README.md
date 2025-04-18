@@ -35,7 +35,7 @@
    - [Security Enhancements Discussion](#security-enhancements-discussion)
 10. [Experimental Results and Discussion](#10-experimental-results-and-discussion)
 11. [Conclusion](#11-conclusion)
-12. [References](#12-references)
+12. [Results](#12-results)
 
 ---
 
@@ -506,3 +506,160 @@ Practical considerations are addressed through lossless zlib compression for eff
 This multi-layered solution offers a strong foundation for secure image transmission in various applications. Future work could include implementing HMAC-SHA256 for authenticated encryption.
 
 ---
+## 12. Results
+### Example Single Run Result
+-- Starting Image Processing Pipeline ---
+
+--- Task 1: Preprocessing ---
+Loaded image from uploaded data.
+Original image mode: RGB, size: (6411, 3981)
+Image is not square (3981x6411). Padding to make it square.
+Padded image size: (6411, 6411)
+Original image dimensions stored for metrics: (6411, 3981, 3)
+Image array type after preprocessing: uint8, shape: (6411, 6411, 3)
+
+--- Task 2: Encryption (ACM + S-Box + Logistic Map) ---
+Starting Encryption Process...
+Applying Arnold's Cat Map with 10 iterations (a=1, b=1)...
+Applying AES S-box substitution...
+Applying Logistic Map encryption (x0=0.3141592653589793, r=3.9999999)...
+Encryption completed in 53.5780 seconds.
+Encrypted image shape (before steg): (6411, 6411, 3), dtype: uint8
+
+--- Task 2.5: Steganography - Embedding Metadata ---
+
+--- Performing Steganography: Hiding Metadata ---
+Metadata size: 494 bytes
+Total payload with header: 498 bytes (3984 bits)
+Successfully embedded 3984 bits of metadata
+✅ Successfully embedded metadata using LSB steganography.
+Final encrypted image shape (after steg attempt): (6411, 6411, 3), dtype: uint8
+
+--- Task 3: Compression (zlib) ---
+Starting Compression...
+Compression (zlib level 7) completed in 9.4867 seconds.
+Original size: 123302763 bytes, Compressed size: 97228068 bytes, Ratio: 0.7885
+
+--- Task 4: Hashing Compressed Data ---
+Calculated SHA-256 Hash of Compressed Data: 07cf4b01c8ca98e13615012dd2a0f7a3f5646683f0c7b814c52b3a1ec117b672
+
+--- Tamper Verification (Compressed Data) ---
+Expected Hash:  07cf4b01c8ca98e13615012dd2a0f7a3f5646683f0c7b814c52b3a1ec117b672
+Calculated Hash:07cf4b01c8ca98e13615012dd2a0f7a3f5646683f0c7b814c52b3a1ec117b672
+Integrity Check PASSED: Compressed data hashes match.
+
+--- Task 5: Decompression (zlib) ---
+Starting Decompression...
+Decompression completed in 1.1449 seconds.
+Decompressed image shape: (6411, 6411, 3), dtype: uint8
+
+--- Task 5.5: Extracting Metadata from Steganography ---
+
+--- Extracting Hidden Metadata from Steganography ---
+Detected metadata length: 494 bytes
+Successfully extracted metadata: 4 fields
+
+--- Steganography Metadata Retrieved ---
+{
+  "encrypted_by": "Enhanced Image Security System",
+  "description": "Encrypted using ACM, AES S-box, Logistic Map, Compressed with zlib, Metadata via LSB Steg.",
+  "timestamp": "2025-04-18 11:11:33 UTC",
+  "encryption_params": {
+    "acm_iterations": 10,
+    "acm_a": 1,
+    "acm_b": 1,
+    "logistic_x0": 0.3141592653589793,
+    "logistic_r": 3.9999999,
+    "original_shape_unpadded": [
+      6411,
+      3981,
+      3
+    ],
+    "original_shape_padded": [
+      6411,
+      6411,
+      3
+    ],
+    "dtype": "uint8",
+    "grayscale": false,
+    "padded": true,
+    "pre_steg_shape": [
+      6411,
+      6411,
+      3
+    ],
+    "pre_steg_dtype": "uint8"
+  }
+}
+--------------------------------------
+
+
+--- Task 6: Decryption (Logistic Map -> Inv S-Box -> Inv ACM -> Unpad) ---
+Using Decryption Parameters: ACM iter=10, a=1, b=1, x0=0.3141592653589793, r=3.9999999
+Target Original Shape: (6411, 3981, 3), Padding Applied Originally: True
+Starting Decryption Process (on decompressed data)...
+Applying Logistic Map decryption (x0=0.3141592653589793, r=3.9999999)...
+Applying Inverse AES S-box substitution...
+Applying Inverse Arnold's Cat Map with 10 iterations (a=1, b=1)...
+Removing padding to restore original size (6411, 3981, 3)...
+Final decrypted size after unpadding: (6411, 3981)
+Decryption completed in 52.8920 seconds.
+Final decrypted image shape: (6411, 3981, 3), dtype: uint8
+
+--- Task 7: Performance & Security Analysis ---
+
+--- Timing ---
+Encryption Time:   53.5780s
+Compression Time:  9.4867s
+Decompression Time:1.1449s
+Decryption Time:   52.8920s
+Total Time (Enc->Comp->Decomp->Dec): 117.1015s
+Image dimensions processed (padded): (6411, 6411, 3)
+Original unpadded dimensions: (6411, 3981, 3)
+
+--- Similarity Metrics (Original Unpadded vs Final Decrypted) ---
+MSE:  0.2813
+PSNR: 53.6385 dB
+SSIM: 0.9995
+Entropy (Original):  4.7076
+Entropy (Decrypted): 4.7076
+
+--- Security Analysis (Original Unpadded vs Encrypted) ---
+Entropy (Original Unpadded): 4.7076
+Entropy (Encrypted - Pre Steg):  7.9208
+Entropy increased significantly towards ideal random distribution (Good).
+![image](https://github.com/user-attachments/assets/73961e06-106b-4be8-acea-20f9aebdc2c3)
+![image](https://github.com/user-attachments/assets/f50662d1-6981-48e1-aaa5-38222e7ba751)
+--- Key Sensitivity Test ---
+Attempting decryption with slightly modified key (x0 = 0.314159266358979)...
+Starting Decryption Process (on decompressed data)...
+Applying Logistic Map decryption (x0=0.31415926635897934, r=3.9999999)...
+Applying Inverse AES S-box substitution...
+Applying Inverse Arnold's Cat Map with 10 iterations (a=1, b=1)...
+Removing padding to restore original size (6411, 3981)...
+Final decrypted size after unpadding: (6411, 3981)
+Decryption completed in 53.9840 seconds.
+Resulting PSNR (Wrong Key): 5.8309 dB
+Resulting SSIM (Wrong Key): 0.0043
+✅ Key sensitivity test PASSED: Decryption with slightly wrong key produced significantly different result.
+
+--- Task 8: Saving and Downloading Output ---
+Compressed encrypted data saved as: encrypted_compressed_data.zlib-steg
+Final decrypted image saved as: decrypted_image.png
+Initiating Colab downloads (if files were saved)...
+
+--- Image Processing Script Execution Finished ---
+
+### Average over 10 runs of different image sizes and types
+![image](https://github.com/user-attachments/assets/818ead58-22b6-478a-a592-ac96010b0880)
+![image](https://github.com/user-attachments/assets/a88be7ed-9eba-47f6-a0e5-0a18e81a1141)
+![image](https://github.com/user-attachments/assets/855e9ad4-6b09-407f-9f2f-f79318954032)
+![image](https://github.com/user-attachments/assets/685b74f8-0cc0-4f9c-86bf-97f5f0bc8766)
+![image](https://github.com/user-attachments/assets/cce5e120-b6f9-4b49-a930-b7c112bfbf9f)
+![image](https://github.com/user-attachments/assets/25f010c0-faf2-45dd-8ec4-16325c751684)
+![image](https://github.com/user-attachments/assets/c8b5ef5f-052e-4dee-bb62-c9ac02bed5b5)
+
+
+
+
+
