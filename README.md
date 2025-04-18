@@ -255,8 +255,10 @@ The integrity verification approach uses:
 ---
 
 ## 7. System Architecture and Flowcharts
+### Simplified Process Flow
+![Blank diagram (7)](https://github.com/user-attachments/assets/9c7a9c0e-0dae-4406-aa33-9631da9446f2)
 
-### Overall Process Flowchart
+### > Overall Process Flowchart
 ```mermaid
 graph TD
   A[Start: Image Upload] --> B(Image Preprocessing<br>Pad/Resize to Square<br>Store Original Shape)
