@@ -319,8 +319,7 @@ Q --> T(Apply AES S-Box Substitution);
 subgraph Logistic XOR Step  
 direction LR  
 R(Generate Chaotic Keystream with Logistic Map Key) --> S;  
-T -- S-Box Output --> S(Perform XOR Operation  
-S-Box Output XOR Keystream);  
+T -- S-Box Output --> S(Perform XOR Operation S-Box Output XOR Keystream);  
 end  
 S --> U[Output Encrypted Image Array Pre-Steganography];
 ```
