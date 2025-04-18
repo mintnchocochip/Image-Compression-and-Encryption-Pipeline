@@ -558,6 +558,7 @@ Detected metadata length: 494 bytes
 Successfully extracted metadata: 4 fields
 
 --- Steganography Metadata Retrieved ---
+```JSON
 {
   "encrypted_by": "Enhanced Image Security System",
   "description": "Encrypted using ACM, AES S-box, Logistic Map, Compressed with zlib, Metadata via LSB Steg.",
@@ -589,6 +590,7 @@ Successfully extracted metadata: 4 fields
     "pre_steg_dtype": "uint8"
   }
 }
+```
 --------------------------------------
 
 
