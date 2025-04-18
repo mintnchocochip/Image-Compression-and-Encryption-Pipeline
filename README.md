@@ -150,8 +150,6 @@ After encryption and metadata embedding, the resulting image data (as a NumPy ar
 
 For integrity verification, the SHA-256 hash of the *compressed* byte stream is calculated before transmission. The recipient recalculates the SHA-256 hash of the received compressed data and compares it to the transmitted hash. A mismatch indicates that the data was corrupted or tampered with during transit.
 
-> *Note: While an initial requirement mentioned strengthening SHA-256, the current implementation uses standard SHA-256 for integrity checking. A common method to "strengthen" its application, fulfilling the likely intent of the requirement, would be to use HMAC-SHA256. This incorporates a secret key to provide message authentication alongside integrity, verifying the sender's identity.*
-
 ### Metadata Embedding via Steganography
 
 To ensure the recipient has the necessary information for decryption without transmitting keys separately, critical parameters are embedded directly into the encrypted image using LSB steganography *before* compression. The embedded metadata includes:
@@ -458,8 +456,6 @@ The system incorporates several features contributing to security:
 * **AES S-box:** The addition of the S-box significantly hardens the scheme against standard cryptanalytic techniques compared to just ACM and Logistic Map
 * **Integrity Verification:** Using SHA-256 prevents undetected modification of the transmitted data blob
 * **Parameter Embedding:** Steganography helps manage keys and parameters securely by bundling them with the ciphertext
-
-> *Enhancement Note: As discussed regarding the initial faculty feedback, replacing the standard SHA-256 integrity check with HMAC-SHA256 would add authentication. This verifies the *sender* of the data (assuming a shared secret key) in addition to verifying integrity, directly addressing the spirit of the "strengthen SHA-256" request by adding authentication capability.*
 
 ---
 
