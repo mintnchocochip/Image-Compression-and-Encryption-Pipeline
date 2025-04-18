@@ -1,3 +1,4 @@
+# Project Report
 # Secure and Efficient Image Encryption with Compression and Metadata Embedding
 
 ## Table of Contents
