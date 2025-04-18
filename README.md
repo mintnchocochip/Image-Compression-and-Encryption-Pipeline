@@ -272,7 +272,7 @@ graph TD
   K --> L{Hash OK?}
   L -- Yes --> M(Decompress Data)
   L -- No --> Z_Fail[End: Integrity Failure]
-  M --> N(Steganography:<br>Extract Metadata from LSBs)
+  M --> N(Steganography: Extract Metadata from LSBs)
   N --> O(Decrypt: Apply Logistic Map XOR<br>using Extracted/Default Key)
   O --> P(Decrypt: Apply Inverse AES S-Box)
   P --> Q(Decrypt: Apply Inverse ACM<br>using Extracted/Default Key)
