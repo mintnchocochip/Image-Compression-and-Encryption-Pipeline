@@ -34,9 +34,8 @@
    - [Performance Metrics](#performance-metrics)
    - [Security Considerations and Key Sensitivity](#security-considerations-and-key-sensitivity)
    - [Security Enhancements Discussion](#security-enhancements-discussion)
-10. [Experimental Results and Discussion](#10-experimental-results-and-discussion)
-11. [Results](#11-results)
-12. [Conclusion](#12-conclusion)
+10. [Results and Discussion](#10-results-and-discussion)
+11. [Conclusion](#11-conclusion)
 
 
 ---
@@ -461,41 +460,6 @@ The system incorporates several features contributing to security:
 ---
 
 ## 10. Experimental Results and Discussion
-
-Implementation in Python using libraries like NumPy, Pillow, Matplotlib, Scikit-image, hashlib, and zlib was tested across environments. Key findings:
-
-* **Encryption Effectiveness:** 
-  * The combination of ACM, AES S-box, and Logistic Map XOR consistently transforms diverse input images into noise-like outputs
-  * High entropy values (typically close to 8.0) indicate effective encryption
-  * Histograms of encrypted images appear flat and uniform
-
-* **Compression:** 
-  * zlib compression typically achieves significant size reduction for the encrypted data
-  * Beneficial for transmission/storage
-  * Compression ratios vary depending on the encrypted image's (already high) entropy
-
-* **Integrity:** 
-  * The SHA-256 hash verification successfully detects any simulated tampering with the compressed data stream
-
-* **Metadata Handling:** 
-  * LSB steganography successfully embeds and extracts necessary decryption parameters
-  * Enables correct reconstruction even when global parameters differ from those used for encryption
-
-* **Decryption Fidelity:** 
-  * When the integrity check passes and correct parameters (via metadata or defaults) are used, the decryption process yields an image visually identical to the original
-  * Confirmed by very low MSE, high (often infinite) PSNR, and SSIM values close to 1.0
-
-* **Key Sensitivity:** 
-  * Tests confirm extreme sensitivity to the Logistic Map parameters (x0, r)
-  * A minimal change results in a completely scrambled and unrecognizable decrypted image
-  * Highlights the cryptographic strength derived from chaos
-
-* **AES S-box Impact:** 
-  * The inclusion of the S-box adds a computationally light but cryptographically significant non-linear layer
-  * Theoretically increases resistance to known attacks without drastically impacting overall performance
-
----
-## 11. Results
 ### Example Single Run Result
 ![image](https://github.com/user-attachments/assets/4b2515c3-c49d-437c-88d8-607b1c32440e)
 ![image](https://github.com/user-attachments/assets/87448f73-1ba6-43f2-b46a-d1c224cf2f9f)
@@ -541,6 +505,7 @@ Implementation in Python using libraries like NumPy, Pillow, Matplotlib, Scikit-
 
 
 ### Average over 10 runs of different image sizes and types
+10 random images of different size and file formats were chosen to test the pipelines efficiency. Various key parameters were studied and graphed for better visualization.
 ![image](https://github.com/user-attachments/assets/818ead58-22b6-478a-a592-ac96010b0880)
 ![image](https://github.com/user-attachments/assets/a88be7ed-9eba-47f6-a0e5-0a18e81a1141)
 ![image](https://github.com/user-attachments/assets/855e9ad4-6b09-407f-9f2f-f79318954032)
@@ -551,7 +516,7 @@ Implementation in Python using libraries like NumPy, Pillow, Matplotlib, Scikit-
 
 ---
 
-## 12. Conclusion
+## 11. Conclusion
 
 This project presents a robust and efficient system for image encryption leveraging a hybrid approach. By combining the spatial confusion of Arnold's Cat Map, the strong non-linearity of the AES S-box, and the diffusive properties of Logistic Map-based chaotic encryption, it achieves a high degree of security.
 
