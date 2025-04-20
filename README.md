@@ -2,7 +2,7 @@
 # Secure and Efficient Image Encryption with Compression and Metadata Embedding
 
 ## Table of Contents
-
+0. [Abstract](#0-abstract)
 1. [Introduction](#1-introduction)
 2. [Background and Motivation](#2-background-and-motivation)
 3. [Project Objectives](#3-project-objectives)
@@ -37,14 +37,14 @@
 10. [Results and Discussion](#10-results-and-discussion)
 11. [Conclusion](#11-conclusion)
 
-
+---
+## 0. Abstract
+This project presents a hybrid image encryption system combining Arnold Cat Map (ACM) spatial shuffling, AES S-box substitution, and Logistic Map chaotic encryption. The encrypted data undergoes zlib compression, SHA-256 integrity verification, and metadata embedding via LSB steganography. Performance analysis shows 85-92% compression ratios and encryption/decryption times under 12 seconds for 4K images, while security metrics demonstrate near-ideal entropy (7.9993) and key sensitivity (PSNR <9 dB with 1e-9 key deviation)
 ---
 
 ## 1. Introduction
 
 The exponential growth of digital data necessitates robust methods for secure image transmission. This project details a hybrid image encryption system combining spatial shuffling (Arnold's Cat Map - ACM), byte substitution (AES S-box), and chaotic encryption (Logistic Map). The resulting encrypted image data is losslessly compressed using zlib for efficiency, its integrity verified using SHA-256 hashing, and critical decryption metadata is embedded within the encrypted data stream via Least Significant Bit (LSB) steganography. 
-
-The system is designed for flexibility, supporting execution in environments like Google Colab and Jupyter Notebooks. This report covers the methodology, implementation, security analysis, and performance evaluation of the enhanced system.
 
 ---
 
@@ -524,6 +524,8 @@ Practical considerations are addressed through lossless zlib compression for eff
 
 This multi-layered solution offers a strong foundation for secure image transmission in various applications. Future work could include implementing HMAC-SHA256 for authenticated encryption.
 
+> [!IMPORTANT]
+> Submitted to Dr. Lekshmi K
 
 
 
