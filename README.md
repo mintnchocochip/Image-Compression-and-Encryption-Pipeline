@@ -35,8 +35,9 @@
    - [Security Considerations and Key Sensitivity](#security-considerations-and-key-sensitivity)
    - [Security Enhancements Discussion](#security-enhancements-discussion)
 10. [Experimental Results and Discussion](#10-experimental-results-and-discussion)
-11. [Conclusion](#11-conclusion)
-12. [Results](#12-results)
+11. [Results](#11-results)
+12. [Conclusion](#12-conclusion)
+
 
 ---
 
@@ -494,17 +495,7 @@ Implementation in Python using libraries like NumPy, Pillow, Matplotlib, Scikit-
   * Theoretically increases resistance to known attacks without drastically impacting overall performance
 
 ---
-
-## 11. Conclusion
-
-This project presents a robust and efficient system for image encryption leveraging a hybrid approach. By combining the spatial confusion of Arnold's Cat Map, the strong non-linearity of the AES S-box, and the diffusive properties of Logistic Map-based chaotic encryption, it achieves a high degree of security.
-
-Practical considerations are addressed through lossless zlib compression for efficiency, SHA-256 hashing for data integrity verification, and LSB steganography for secure embedding of essential decryption metadata. Performance analysis demonstrates effective encryption and high-fidelity decryption, while security analysis and key sensitivity tests confirm the system's robustness.
-
-This multi-layered solution offers a strong foundation for secure image transmission in various applications. Future work could include implementing HMAC-SHA256 for authenticated encryption.
-
----
-## 12. Results
+## 11. Results
 ### Example Single Run Result
 ![image](https://github.com/user-attachments/assets/4b2515c3-c49d-437c-88d8-607b1c32440e)
 ![image](https://github.com/user-attachments/assets/87448f73-1ba6-43f2-b46a-d1c224cf2f9f)
@@ -558,6 +549,15 @@ This multi-layered solution offers a strong foundation for secure image transmis
 ![image](https://github.com/user-attachments/assets/25f010c0-faf2-45dd-8ec4-16325c751684)
 ![image](https://github.com/user-attachments/assets/c8b5ef5f-052e-4dee-bb62-c9ac02bed5b5)
 
+---
+
+## 12. Conclusion
+
+This project presents a robust and efficient system for image encryption leveraging a hybrid approach. By combining the spatial confusion of Arnold's Cat Map, the strong non-linearity of the AES S-box, and the diffusive properties of Logistic Map-based chaotic encryption, it achieves a high degree of security.
+
+Practical considerations are addressed through lossless zlib compression for efficiency, SHA-256 hashing for data integrity verification, and LSB steganography for secure embedding of essential decryption metadata. Performance analysis demonstrates effective encryption and high-fidelity decryption, while security analysis and key sensitivity tests confirm the system's robustness.
+
+This multi-layered solution offers a strong foundation for secure image transmission in various applications. Future work could include implementing HMAC-SHA256 for authenticated encryption.
 
 
 
