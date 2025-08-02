@@ -39,7 +39,9 @@
 
 ---
 ## 0. Abstract
+
 This project presents a hybrid image encryption system combining Arnold Cat Map (ACM) spatial shuffling, AES S-box substitution, and Logistic Map chaotic encryption. The encrypted data undergoes zlib compression, SHA-256 integrity verification, and metadata embedding via LSB steganography. Performance analysis shows 85-92% compression ratios and encryption/decryption times under 12 seconds for 4K images, while security metrics demonstrate near-ideal entropy (7.9993) and key sensitivity (PSNR <9 dB with 1e-9 key deviation)
+
 ---
 
 ## 1. Introduction
